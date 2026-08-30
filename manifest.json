@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Türkmençe Ýazuw Barlagçy",
+  "version": "0.1.0",
+  "description": "Sosial mediada türkmençe ýazuw ýalňyşlaryny ýerli sözlük bilen belleýär.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_title": "Türkmençe ýazuw barlagçy",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

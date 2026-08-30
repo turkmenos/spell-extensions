@@ -1,48 +1,25 @@
-# Turkmen language toolkit
+# Türkmençe Ýazuw Barlagçy
 
-An open-source, dependency-free Go foundation for querying a Turkmen dictionary
-and suggesting corrections. The JSON file is decoded once and indexed in memory;
-lookups do not rescan it.
+Chrome ve Chromium tabanlı tarayıcılar için yerel çalışan Turkmence yazım
+denetleme extension'ı. Sosyal medya sayfalarındaki muhtemel Turkmence metinleri
+algılar ve sözlükte bulunmayan kelimeleri kırmızı dalgalı çizgiyle işaretler.
+Sözlük cihazdan ayrılmaz; uzak API veya sunucu kullanılmaz.
 
-## Commands
+## Chrome'a yükleme
 
-The CLI looks for `data/dictionary.json` and then `dictionary.json`. A different
-location can be supplied with `-data`.
+1. Repository'yi indir veya clone et.
+2. Chrome'da `chrome://extensions` adresini aç.
+3. Sağ üstten **Developer mode** seçeneğini aç.
+4. **Load unpacked** seçeneğine basıp repository klasörünü seç.
+5. Bir sosyal medya sayfasını yenile.
 
-```sh
-go run ./cmd/turkmen lookup "abadan"
-go run ./cmd/turkmen check "mekdepe"
-go run ./cmd/turkmen -data /path/to/dictionary.json lookup "şäher"
-```
+Extension dinamik yüklenen gönderileri izler. Bir metin bloğunu Turkmence kabul
+etmek için sözlük eşleşme oranına ve Turkmence karakterlere bakar. Morfoloji
+motoru henüz olmadığı için bazı doğru çekimli kelimeler yanlış işaretlenebilir.
 
-## HTTP API on Vercel
+## Yapı
 
-Connect the GitHub repository to a Vercel project with the repository root as
-the Root Directory. No build command or environment variable is required. The
-dictionary is embedded in the Go function so it is available at runtime.
-
-```text
-GET /health
-GET /v1/lookup?word=abadan
-GET /v1/check?word=çüýş
-```
-
-Example extension request:
-
-```js
-const response = await fetch(
-  "https://api.turkmen.app/v1/check?word=" + encodeURIComponent(word),
-);
-const result = await response.json();
-```
-
-`internal/dictionary` owns JSON loading and exact, Unicode case-insensitive
-lookup. `internal/spellcheck` owns the reusable BK-tree and rune-aware edit
-distance. `internal/morphology` is the extension point for later Turkmen rules.
-
-## Development
-
-```sh
-go test ./...
-go test -bench=. ./internal/dictionary ./internal/spellcheck
-```
+- `data/dictionary.json`: Yerel sözlük verisi
+- `background.js`: Sözlüğü yükleyen ve sorgulayan service worker
+- `content.js`: Sayfadaki metinleri algılayan ve işaretleyen kod
+- `popup.*`: Extension açma/kapatma arayüzü

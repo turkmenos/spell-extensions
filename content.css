@@ -1,0 +1,8 @@
+.turkmen-spell-error {
+  text-decoration-line: underline !important;
+  text-decoration-style: wavy !important;
+  text-decoration-color: #e02424 !important;
+  text-decoration-thickness: 1.5px !important;
+  text-underline-offset: 3px !important;
+  cursor: help !important;
+}
