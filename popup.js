@@ -2,6 +2,7 @@ const enabled = document.querySelector("#enabled");
 const status = document.querySelector("#status");
 const statusDetail = document.querySelector("#status-detail");
 const statusCard = document.querySelector(".status-card");
+document.querySelector("#version").textContent = `v${chrome.runtime.getManifest().version}`;
 
 function renderStatus(isEnabled) {
   statusCard.className = `status-card ${isEnabled ? "ready" : "disabled"}`;

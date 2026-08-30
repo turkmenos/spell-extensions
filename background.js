@@ -33,7 +33,7 @@ async function fetchJSON(path) {
 }
 
 function normalize(word) {
-  return word.trim().toLocaleLowerCase("tk");
+  return TurkmenMorphology.normalize(word);
 }
 
 function isKnown(dictionary, word) {

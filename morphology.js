@@ -39,7 +39,9 @@
   ];
 
   function normalize(word) {
-    return word.trim().toLocaleLowerCase("tk");
+    // ñ is frequently typed instead of the Turkmen letter ň on keyboards
+    // without a Turkmen layout. Treat it as the same letter for spell checks.
+    return word.trim().toLocaleLowerCase("tk").replaceAll("ñ", "ň");
   }
 
   function isKnown(lexicon, word) {

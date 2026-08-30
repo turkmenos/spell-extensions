@@ -9,12 +9,13 @@ const lexicon = new Set([
 for (const word of [
   "gämisi", "howasy", "kitaby", "kitaplar", "kitaplarymyzdan",
   "mekdepde", "gelýär", "işledi", "gördi", "türkmen",
-  "bäriň", "syçany", "ýurdumyň", "garynjasynyň", "saýlamaly"
+  "bäriň", "syçany", "ýurdumyň", "garynjasynyň", "saýlamaly",
+  "bäriñ", "ýurdumyñ", "garynjasynyñ"
 ]) {
   assert.equal(morphology.isKnown(lexicon, word), true, `${word} should be recognized`);
 }
 
-for (const word of ["xyzabc", "kitapzzz", "gelýärzzz", "bäriñ", "ýurdumyñ", "garynjasynyñ"]) {
+for (const word of ["xyzabc", "kitapzzz", "gelýärzzz"]) {
   assert.equal(morphology.isKnown(lexicon, word), false, `${word} should be rejected`);
 }
 
