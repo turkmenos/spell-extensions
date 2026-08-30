@@ -7,18 +7,57 @@
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
-    <main>
-      <div class="heading">
-        <div class="logo">Ä</div>
-        <div><h1>Ýazuw barlagçy</h1><p>Türkmençe sözler üçin</p></div>
-      </div>
-      <label class="switch-row">
-        <span>Şu brauzerde işlesin</span>
-        <input id="enabled" type="checkbox">
-        <span class="switch" aria-hidden="true"></span>
-      </label>
-      <p id="status" class="status">Sözlük taýýarlanýar…</p>
-      <p class="note">Sözlükde ýok sözler <span class="sample">gyzyl çyzyk</span> bilen bellenýär. Goşulmalar entek doly tanalmaýar.</p>
+    <main class="shell">
+      <header class="hero">
+        <div class="brand-mark" aria-hidden="true">
+          <span>Ä</span>
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="m7.5 12.5 3 3 6-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="heading">
+          <p class="eyebrow">TÜRKMEN DILI</p>
+          <h1>Ýazuw barlagçy</h1>
+          <p class="subtitle">Sözleriňizi ynam bilen ýazyň</p>
+        </div>
+      </header>
+
+      <section class="control-card" aria-labelledby="scanner-title">
+        <div class="control-copy">
+          <div class="control-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 5.5 5.7v5.1c0 4.1 2.7 7.9 6.5 9.2 3.8-1.3 6.5-5.1 6.5-9.2V5.7L12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="m9 11.7 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h2 id="scanner-title">Ýazuw barlagy</h2>
+            <p id="toggle-description">Sahypalardaky türkmençe ýazgylary barlaýar</p>
+          </div>
+        </div>
+        <label class="toggle" aria-label="Ýazuw barlagyny aç ýa-da öçür">
+          <input id="enabled" type="checkbox" aria-describedby="toggle-description">
+          <span class="toggle-track" aria-hidden="true"><span></span></span>
+        </label>
+      </section>
+
+      <section class="status-card" aria-live="polite">
+        <div class="status-dot" aria-hidden="true"></div>
+        <div>
+          <p id="status" class="status">Sözlük taýýarlanýar…</p>
+          <p id="dictionary-count" class="status-detail">Ýerli sözlük ýüklenýär</p>
+        </div>
+      </section>
+
+      <section class="info-card">
+        <div class="example" aria-hidden="true"><span>ýalňyş söz</span></div>
+        <p>Sözlükde tapylmadyk sözler gyzyl tolkunly çyzyk bilen bellenýär.</p>
+      </section>
+
+      <footer>
+        <span class="privacy"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 10V8a4 4 0 1 1 8 0v2m-9 0h10v9H7v-9Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Maglumatlar enjamyňyzda galýar</span>
+        <span class="version">v0.1</span>
+      </footer>
     </main>
     <script src="popup.js"></script>
   </body>
