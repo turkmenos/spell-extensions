@@ -51,15 +51,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       .then((dictionary) => {
         const known = {};
         for (const word of message.words || []) known[word] = isKnown(dictionary, word);
-        sendResponse({ known, dictionarySize: dictionary.size });
+        sendResponse({ known });
       })
       .catch((error) => sendResponse({ error: error.message }));
     return true;
   }
 
-  if (message?.type === "setBadge" && sender.tab?.id !== undefined) {
-    const count = Number(message.count) || 0;
-    chrome.action.setBadgeBackgroundColor({ color: "#d93025", tabId: sender.tab.id });
-    chrome.action.setBadgeText({ text: count ? String(Math.min(count, 99)) : "", tabId: sender.tab.id });
-  }
 });

@@ -14,7 +14,6 @@ remote API or server.
 - Checks words against a bundled dictionary containing over 18,000 headwords
 - Supports Turkmen characters: `ä`, `ç`, `ž`, `ň`, `ö`, `ş`, `ü`, and `ý`
 - Watches dynamically loaded social media posts
-- Displays the number of detected spelling issues on the extension badge
 - Can be enabled or disabled from the extension popup
 - Works without an internet connection after installation
 

@@ -1,13 +1,27 @@
 (() => {
   const WORD_PATTERN = /[\p{L}]+(?:[-’'][\p{L}]+)*/gu;
-  const TURKMEN_MARKERS = /[äçžňöşüý]/iu;
+  const TURKMEN_MARKERS = /[äžňý]/iu;
+  const TURKMEN_CONTEXT = new Set([
+    "üçin", "bilen", "ýaly", "ýene", "şeýle", "şol", "hem", "däl",
+    "diýip", "bolsa", "türkmen", "örän", "çünki", "emma", "eýsem"
+  ]);
+  const TURKISH_CONTEXT = new Set([
+    "için", "ile", "gibi", "değil", "çünkü", "ama", "olarak", "olan",
+    "veya", "Türkçe", "şey", "daha"
+  ].map((word) => word.toLocaleLowerCase("tr")));
+  const ENGLISH_CONTEXT = new Set([
+    "the", "and", "for", "with", "this", "that", "from", "your", "you",
+    "are", "not", "have", "will", "can", "but", "more"
+  ]);
   const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "SELECT", "OPTION", "CODE", "PRE"]);
+  const SKIP_SELECTOR = "code, pre, kbd, samp, var, [data-language], [class*='language-'], [class*='highlight'], [class*='code-block'], [data-testid*='code']";
   const checkedNodes = new WeakSet();
   let enabled = true;
   let scanTimer;
 
   chrome.storage.local.get({ enabled: true }).then((settings) => {
     enabled = settings.enabled;
+    removeExistingMarks();
     if (enabled) scan(document.body);
   });
 
@@ -53,13 +67,23 @@
       if (!candidate.node.isConnected || checkedNodes.has(candidate.node)) continue;
       const normalized = candidate.words.map((word) => word.toLocaleLowerCase("tk"));
       const knownCount = normalized.filter((word) => response.known[word]).length;
-      const hasMarker = candidate.words.some((word) => TURKMEN_MARKERS.test(word));
       const ratio = knownCount / candidate.words.length;
-      const likelyTurkmen = (knownCount >= 2 && ratio >= 0.4) || (hasMarker && knownCount >= 1 && ratio >= 0.25);
+      const likelyTurkmen = isLikelyTurkmen(candidate.words, knownCount, ratio);
       checkedNodes.add(candidate.node);
       if (likelyTurkmen) markUnknownWords(candidate.node, response.known);
     }
-    updateBadge();
+  }
+
+  function isLikelyTurkmen(words, knownCount, ratio) {
+    const normalized = words.map((word) => word.toLocaleLowerCase("tk"));
+    const hasStrongMarker = words.some((word) => TURKMEN_MARKERS.test(word));
+    const turkmenSignals = normalized.filter((word) => TURKMEN_CONTEXT.has(word)).length;
+    const foreignSignals = normalized.filter((word) =>
+      TURKISH_CONTEXT.has(word.toLocaleLowerCase("tr")) || ENGLISH_CONTEXT.has(word)
+    ).length;
+    if (foreignSignals >= 2 && !hasStrongMarker) return false;
+    return (hasStrongMarker && knownCount >= 1 && ratio >= 0.25) ||
+      (turkmenSignals >= 2 && knownCount >= 2 && ratio >= 0.5);
   }
 
   function collectTextNodes(root) {
@@ -68,7 +92,7 @@
       acceptNode(node) {
         const parent = node.parentElement;
         if (!parent || !node.data.trim() || checkedNodes.has(node)) return NodeFilter.FILTER_REJECT;
-        if (SKIP_TAGS.has(parent.tagName) || parent.closest(".turkmen-spell-error")) return NodeFilter.FILTER_REJECT;
+        if (SKIP_TAGS.has(parent.tagName) || parent.closest(SKIP_SELECTOR) || parent.closest(".turkmen-spell-error")) return NodeFilter.FILTER_REJECT;
         if (parent.isContentEditable || parent.closest("[contenteditable='true']")) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
@@ -103,13 +127,11 @@
   }
 
   function clearMarks() {
-    document.querySelectorAll(".turkmen-spell-error").forEach((mark) => mark.replaceWith(mark.textContent));
-    document.body?.normalize();
-    updateBadge();
+    removeExistingMarks();
   }
 
-  function updateBadge() {
-    const count = document.querySelectorAll(".turkmen-spell-error").length;
-    chrome.runtime.sendMessage({ type: "setBadge", count }).catch(() => {});
+  function removeExistingMarks() {
+    document.querySelectorAll(".turkmen-spell-error").forEach((mark) => mark.replaceWith(mark.textContent));
+    document.body?.normalize();
   }
 })();

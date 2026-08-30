@@ -1,15 +1,12 @@
 const enabled = document.querySelector("#enabled");
 const status = document.querySelector("#status");
-const statusDetail = document.querySelector("#dictionary-count");
+const statusDetail = document.querySelector("#status-detail");
 const statusCard = document.querySelector(".status-card");
-let dictionarySize;
 
 function renderStatus(isEnabled) {
   statusCard.className = `status-card ${isEnabled ? "ready" : "disabled"}`;
   status.textContent = isEnabled ? "Barlag işjeň" : "Barlag öçürildi";
-  statusDetail.textContent = dictionarySize
-    ? `${dictionarySize.toLocaleString("tk")} söz · Ýerli barlag`
-    : "Ýerli sözlük ýüklenýär";
+  statusDetail.textContent = "Diňe türkmençe tekstler üçin";
 }
 
 chrome.storage.local.get({ enabled: true }).then((settings) => {
@@ -24,7 +21,6 @@ enabled.addEventListener("change", async () => {
 
 chrome.runtime.sendMessage({ type: "checkWords", words: ["abadan"] }).then((response) => {
   if (response?.error) throw new Error(response.error);
-  dictionarySize = response.dictionarySize;
   renderStatus(enabled.checked);
 }).catch(() => {
   status.textContent = "Sözlük açylmady";
