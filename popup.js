@@ -3,6 +3,11 @@ const status = document.querySelector("#status");
 const statusDetail = document.querySelector("#status-detail");
 const statusCard = document.querySelector(".status-card");
 document.querySelector("#version").textContent = `v${chrome.runtime.getManifest().version}`;
+const wordForm = document.querySelector("#word-form");
+const wordInput = document.querySelector("#word-input");
+const wordResult = document.querySelector("#word-result");
+const resultTitle = document.querySelector("#result-title");
+const resultDetail = document.querySelector("#result-detail");
 
 function renderStatus(isEnabled) {
   statusCard.className = `status-card ${isEnabled ? "ready" : "disabled"}`;
@@ -27,4 +32,38 @@ chrome.runtime.sendMessage({ type: "checkWords", words: ["abadan"] }).then((resp
   status.textContent = "Sözlük açylmady";
   statusDetail.textContent = "Extension-y täzeden ýükläp görüň";
   statusCard.className = "status-card error";
+});
+
+wordForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const word = wordInput.value.trim();
+  if (!word) {
+    wordInput.focus();
+    return;
+  }
+
+  resultTitle.textContent = "Barlanýar…";
+  resultDetail.textContent = "";
+  wordResult.className = "word-result";
+  wordResult.hidden = false;
+
+  try {
+    const result = await chrome.runtime.sendMessage({ type: "inspectWord", word });
+    if (result?.error) throw new Error(result.error);
+    wordResult.className = `word-result ${result.correct ? "correct" : "incorrect"}`;
+    resultTitle.textContent = result.correct ? "Türkmençe dogry" : "Sözlükde tapylmady";
+    if (result.source === "morphology" && result.roots?.length) {
+      resultDetail.textContent = `Köki: ${result.roots[0]}`;
+    } else if (result.source === "dictionary") {
+      resultDetail.textContent = "Esasy sözlükde bar";
+    } else if (result.source === "grammar") {
+      resultDetail.textContent = "Grammatika mysallarynda bar";
+    } else {
+      resultDetail.textContent = result.correct ? "Türkmençe söz hökmünde tanaldy" : "Ýazylyşyny barlap görüň";
+    }
+  } catch {
+    wordResult.className = "word-result incorrect";
+    resultTitle.textContent = "Barlap bolmady";
+    resultDetail.textContent = "Extension-y täzeden ýükläp görüň";
+  }
 });

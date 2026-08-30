@@ -49,6 +49,27 @@
         </div>
       </section>
 
+      <section class="word-checker" aria-labelledby="word-checker-title">
+        <div class="checker-heading">
+          <div>
+            <p class="checker-kicker">ÇALT BARLAG</p>
+            <h2 id="word-checker-title">Söz dogrymy?</h2>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <form id="word-form" class="word-form">
+          <input id="word-input" type="text" placeholder="Sözi ýazyň…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Barlanjak söz">
+          <button type="submit">Barla</button>
+        </form>
+        <div id="word-result" class="word-result" hidden aria-live="polite">
+          <span class="result-icon" aria-hidden="true"></span>
+          <div><strong id="result-title"></strong><p id="result-detail"></p></div>
+        </div>
+      </section>
+
       <section class="info-card">
         <div class="example" aria-hidden="true"><span>ýalňyş söz</span></div>
         <p>Sözlükde tapylmadyk sözler gyzyl tolkunly çyzyk bilen bellenýär.</p>
