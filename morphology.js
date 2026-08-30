@@ -11,11 +11,12 @@
   const NOMINAL_SUFFIXES = [
     "laryň", "leriň", "larymyz", "lerimiz", "laryňyz", "leriňiz",
     "ymyz", "imiz", "umyz", "ümiz", "yňyz", "iňiz", "uňyz", "üňiz",
-    "yndan", "inden", "undan", "ünden", "laryna", "lerine",
+    "yndan", "inden", "undan", "ünden", "ynyň", "iniň", "unyň", "üniň",
+    "nyň", "niň", "nuň", "nüň", "laryna", "lerine",
     "ynda", "inde", "unda", "ünde", "yna", "ine", "una", "üne",
     "lar", "ler", "dan", "den", "dyr", "dir", "dur", "dür",
     "yň", "iň", "uň", "üň", "ym", "im", "um", "üm",
-    "myz", "miz", "ňyz", "ňiz", "sy", "si", "da", "de", "a", "e", "y", "i"
+    "myz", "miz", "ňyz", "ňiz", "sy", "si", "da", "de", "ň", "a", "e", "y", "i"
   ];
 
   const PERSON_SUFFIXES = [
@@ -32,7 +33,7 @@
     "ýandyr", "ýändir", "ýardy", "ýärdi", "jakdy", "jekdi",
     "ypdyr", "ipdir", "updyr", "üpdir", "andyr", "endir",
     "mandyr", "mändir", "mandy", "mändi", "ypdy", "ipdi", "updy", "üpdi",
-    "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
+    "maly", "meli", "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
     "dy", "di", "du", "dü", "yp", "ip", "up", "üp", "an", "en",
     "ar", "er", "maz", "mez", "ma", "me"
   ];

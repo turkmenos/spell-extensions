@@ -6,7 +6,10 @@ const BUILT_IN_WORDS = new Set([
   "türkmen",
   "türkmenistan",
   "türkmenistanyň",
-  "türkmençe"
+  "türkmençe",
+  "syçan",
+  "ýurt",
+  "saýlamak"
 ]);
 
 async function loadDictionary() {
