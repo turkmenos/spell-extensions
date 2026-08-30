@@ -51,6 +51,9 @@ milestone.
 
 - `data/dictionary.json` — bundled Turkmen dictionary
 - `background.js` — dictionary loader and lookup service worker
+- `morphology.js` — noun and verb inflection analyzer derived from the grammar data
+- `data/json/` — source grammar chapters used to derive the morphology rules
+- `data/grammar-words.json` — generated surface forms found in grammar examples
 - `content.js` — language detection and page annotation
 - `content.css` — spelling-error underline styles
 - `popup.html`, `popup.css`, `popup.js` — extension controls

@@ -1,3 +1,5 @@
+importScripts("morphology.js");
+
 let dictionaryPromise;
 
 const BUILT_IN_WORDS = new Set([
@@ -7,30 +9,24 @@ const BUILT_IN_WORDS = new Set([
   "türkmençe"
 ]);
 
-// Conservative suffix handling for common inflected forms. A stripped form is
-// accepted only when the resulting stem exists in the dictionary.
-const SUFFIXES = [
-  "laryň", "leriň", "lardan", "lerden", "larda", "lerde",
-  "ymyzyň", "imiziň", "umiziň", "ümiziň",
-  "ymyz", "imiz", "umyz", "ümiz",
-  "ynyň", "iniň", "unyň", "üniň",
-  "yndan", "inden", "undan", "ünden",
-  "ynda", "inde", "unda", "ünde",
-  "yna", "ine", "una", "üne",
-  "lar", "ler", "dan", "den", "da", "de",
-  "yň", "iň", "uň", "üň", "sy", "si"
-];
-
 async function loadDictionary() {
   if (!dictionaryPromise) {
-    dictionaryPromise = fetch(chrome.runtime.getURL("data/dictionary.json"))
-      .then((response) => {
-        if (!response.ok) throw new Error(`Dictionary load failed: ${response.status}`);
-        return response.json();
-      })
-      .then((document) => new Set(Object.keys(document.words || {}).map(normalize)));
+    dictionaryPromise = Promise.all([
+      fetchJSON("data/dictionary.json"),
+      fetchJSON("data/grammar-words.json")
+    ]).then(([document, grammarWords]) => new Set([
+      ...Object.keys(document.words || {}).map(normalize),
+      ...grammarWords.map(normalize),
+      ...BUILT_IN_WORDS
+    ]));
   }
   return dictionaryPromise;
+}
+
+async function fetchJSON(path) {
+  const response = await fetch(chrome.runtime.getURL(path));
+  if (!response.ok) throw new Error(`Data load failed: ${response.status}`);
+  return response.json();
 }
 
 function normalize(word) {
@@ -38,15 +34,7 @@ function normalize(word) {
 }
 
 function isKnown(dictionary, word) {
-  const normalized = normalize(word);
-  if (dictionary.has(normalized) || BUILT_IN_WORDS.has(normalized)) return true;
-
-  for (const suffix of SUFFIXES) {
-    if (!normalized.endsWith(suffix)) continue;
-    const stem = normalized.slice(0, -suffix.length);
-    if ([...stem].length >= 3 && dictionary.has(stem)) return true;
-  }
-  return false;
+  return TurkmenMorphology.isKnown(dictionary, word);
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
