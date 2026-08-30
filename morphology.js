@@ -10,13 +10,16 @@
   // Longest suffixes come first so layered forms are reduced safely.
   const NOMINAL_SUFFIXES = [
     "laryň", "leriň", "larymyz", "lerimiz", "laryňyz", "leriňiz",
+    "yndaky", "indäki", "undaky", "ündäki", "ndaky", "ndäki",
     "ymyz", "imiz", "umyz", "ümiz", "yňyz", "iňiz", "uňyz", "üňiz",
     "yndan", "inden", "undan", "ünden", "ynyň", "iniň", "unyň", "üniň",
     "nyň", "niň", "nuň", "nüň", "laryna", "lerine",
     "ynda", "inde", "unda", "ünde", "yna", "ine", "una", "üne",
     "lar", "ler", "dan", "den", "dyr", "dir", "dur", "dür",
     "yň", "iň", "uň", "üň", "ym", "im", "um", "üm",
-    "myz", "miz", "ňyz", "ňiz", "sy", "si", "da", "de", "ň", "a", "e", "y", "i"
+    "myz", "miz", "ňyz", "ňiz", "syna", "sine", "suna", "süne",
+    "sy", "si", "nyň", "niň", "ny", "ni", "na", "ne",
+    "ly", "li", "lu", "lü", "ky", "ki", "da", "de", "ň", "a", "e", "y", "i"
   ];
 
   const PERSON_SUFFIXES = [
@@ -33,7 +36,7 @@
     "ýandyr", "ýändir", "ýardy", "ýärdi", "jakdy", "jekdi",
     "ypdyr", "ipdir", "updyr", "üpdir", "andyr", "endir",
     "mandyr", "mändir", "mandy", "mändi", "ypdy", "ipdi", "updy", "üpdi",
-    "maly", "meli", "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
+    "maly", "meli", "kak", "käk", "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
     "dy", "di", "du", "dü", "yp", "ip", "up", "üp", "an", "en",
     "ar", "er", "maz", "mez", "ma", "me"
   ];
@@ -96,6 +99,7 @@
     const last = stem.at(-1);
     const restored = { b: "p", d: "t", g: "k", j: "ç" }[last];
     if (restored) variants.push(stem.slice(0, -1) + restored);
+    if (last === "ä") variants.push(stem.slice(0, -1) + "e");
     return variants;
   }
 

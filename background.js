@@ -9,7 +9,11 @@ const BUILT_IN_WORDS = new Set([
   "türkmençe",
   "syçan",
   "ýurt",
-  "saýlamak"
+  "saýlamak",
+  "unutmak",
+  "minnet",
+  "näsag",
+  "professor"
 ]);
 
 async function loadDictionary() {

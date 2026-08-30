@@ -123,7 +123,8 @@
   }
 
   function shouldMark(word, known) {
-    return [...word].length >= 3 && !known[word.toLocaleLowerCase("tk")];
+    const looksLikeProperName = /^\p{Lu}/u.test(word);
+    return [...word].length >= 3 && !looksLikeProperName && !known[word.toLocaleLowerCase("tk")];
   }
 
   function clearMarks() {
