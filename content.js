@@ -3,7 +3,8 @@
   const TURKMEN_MARKERS = /[äžňý]/iu;
   const TURKMEN_CONTEXT = new Set([
     "üçin", "bilen", "ýaly", "ýene", "şeýle", "şol", "hem", "däl",
-    "diýip", "bolsa", "türkmen", "örän", "çünki", "emma", "eýsem"
+    "diýip", "bolsa", "türkmen", "örän", "çünki", "emma", "eýsem",
+    "degişli", "halypa", "welin", "nähili", "näme", "şundan"
   ]);
   const TURKISH_CONTEXT = new Set([
     "için", "ile", "gibi", "değil", "çünkü", "ama", "olarak", "olan",
@@ -83,7 +84,8 @@
     ).length;
     if (foreignSignals >= 2 && !hasStrongMarker) return false;
     return (hasStrongMarker && knownCount >= 1 && ratio >= 0.25) ||
-      (turkmenSignals >= 2 && knownCount >= 2 && ratio >= 0.5);
+      (turkmenSignals >= 2 && knownCount >= 2 && ratio >= 0.5) ||
+      (turkmenSignals >= 1 && foreignSignals === 0 && knownCount >= 2 && ratio >= 0.4);
   }
 
   function collectTextNodes(root) {

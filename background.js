@@ -16,7 +16,14 @@ const BUILT_IN_WORDS = new Set([
   "professor",
   "ýokanç",
   "utanmak",
-  "çekinmek"
+  "çekinmek",
+  "ýardam",
+  "ýyly",
+  "ýaş",
+  "saç",
+  "kitap",
+  "mekdep",
+  "okamak"
 ]);
 
 async function loadDictionary() {
@@ -24,11 +31,13 @@ async function loadDictionary() {
     dictionaryPromise = Promise.all([
       fetchJSON("data/dictionary.json"),
       fetchJSON("data/grammar-words.json")
-    ]).then(([document, grammarWords]) => new Set([
-      ...Object.keys(document.words || {}).map(normalize),
-      ...grammarWords.map(normalize),
-      ...BUILT_IN_WORDS
-    ]));
+    ]).then(([document, grammarWords]) => {
+      const dictionaryRoots = Object.keys(document.words || {}).map(normalize);
+      return {
+        roots: new Set([...dictionaryRoots, ...BUILT_IN_WORDS]),
+        surface: new Set([...dictionaryRoots, ...grammarWords.map(normalize), ...BUILT_IN_WORDS])
+      };
+    });
   }
   return dictionaryPromise;
 }
@@ -44,7 +53,8 @@ function normalize(word) {
 }
 
 function isKnown(dictionary, word) {
-  return TurkmenMorphology.isKnown(dictionary, word);
+  const normalized = normalize(word);
+  return dictionary.surface.has(normalized) || TurkmenMorphology.isKnown(dictionary.roots, normalized);
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
