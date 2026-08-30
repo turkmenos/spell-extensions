@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="assets/app.png" alt="Turkmen Spell Checker" width="128">
+  <img src="assets/app.png" alt="Turkmen Spell Checker" width="500" height="650">
 
 </p>
 A privacy-friendly Turkmen spell-checking extension for Chrome and other
