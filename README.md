@@ -1,5 +1,10 @@
 # Turkmen Spell Checker
 
+
+<p align="center">
+  <img src="assets/app.png" alt="Turkmen Spell Checker" width="500" height="650">
+
+</p>
 A privacy-friendly Turkmen spell-checking extension for Chrome and other
 Chromium-based browsers. It detects likely Turkmen text on social media pages
 and marks words that are missing from the bundled dictionary with a red wavy
