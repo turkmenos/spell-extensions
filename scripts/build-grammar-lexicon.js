@@ -15,7 +15,7 @@ for (const filename of fs.readdirSync(sourceDirectory).filter((name) => name.end
     .replace(/--- PAGE \d+ ---/gu, " ");
   for (const match of source.matchAll(/[\p{L}]+(?:[-’'][\p{L}]+)*/gu)) {
     const word = match[0].toLocaleLowerCase("tk");
-    if ([...word].length >= 2) words.add(word);
+    if ([...word].length >= 1) words.add(word);
   }
 }
 

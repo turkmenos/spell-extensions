@@ -8,6 +8,33 @@ const wordInput = document.querySelector("#word-input");
 const wordResult = document.querySelector("#word-result");
 const resultTitle = document.querySelector("#result-title");
 const resultDetail = document.querySelector("#result-detail");
+const obsceneEnabled = document.querySelector("#obscene-enabled");
+const obsceneSiteList = document.querySelector("#obscene-site-list");
+
+chrome.storage.local.get({ obsceneEnabled: true }).then((settings) => {
+  obsceneEnabled.checked = settings.obsceneEnabled;
+});
+
+chrome.runtime.sendMessage({ type: "getObsceneWords" }).then((response) => {
+  const sites = response?.sites || [];
+  obsceneSiteList.replaceChildren();
+  if (!sites.length) {
+    obsceneSiteList.textContent = "Hiç bir saýt goşulmady";
+    return;
+  }
+  for (const site of sites) {
+    const item = document.createElement("span");
+    item.textContent = site;
+    obsceneSiteList.append(item);
+  }
+}).catch(() => {
+  obsceneSiteList.textContent = "Saýt sanawyny ýükläp bolmady";
+});
+
+obsceneEnabled.addEventListener("change", async () => {
+  await chrome.storage.local.set({ obsceneEnabled: obsceneEnabled.checked });
+});
+
 
 function renderStatus(isEnabled) {
   statusCard.className = `status-card ${isEnabled ? "ready" : "disabled"}`;
@@ -53,11 +80,11 @@ wordForm.addEventListener("submit", async (event) => {
     wordResult.className = `word-result ${result.correct ? "correct" : "incorrect"}`;
     resultTitle.textContent = result.correct ? "Türkmençe dogry" : "Sözlükde tapylmady";
     if (result.source === "morphology" && result.roots?.length) {
-      resultDetail.textContent = `Köki: ${result.roots[0]}`;
+      resultDetail.textContent = `Asly: ${result.roots[0]}`;
     } else if (result.source === "dictionary") {
-      resultDetail.textContent = "Esasy sözlükde bar";
+      resultDetail.textContent = `Asly: ${result.normalized}`;
     } else if (result.source === "grammar") {
-      resultDetail.textContent = "Grammatika mysallarynda bar";
+      resultDetail.textContent = `Asly: ${result.normalized}`;
     } else {
       resultDetail.textContent = result.correct ? "Türkmençe söz hökmünde tanaldy" : "Ýazylyşyny barlap görüň";
     }

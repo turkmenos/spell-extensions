@@ -6,3 +6,29 @@
   text-underline-offset: 3px !important;
   cursor: help !important;
 }
+
+.turkmen-foreign-word {
+  text-decoration-line: underline !important;
+  text-decoration-style: wavy !important;
+  text-decoration-color: #d6a400 !important;
+  text-decoration-thickness: 1.5px !important;
+  text-underline-offset: 3px !important;
+  cursor: help !important;
+}
+
+.turkmen-obscene-word {
+  display: inline-block !important;
+  padding: 0 0.12em !important;
+  border-radius: 0.2em !important;
+  color: transparent !important;
+  background: currentColor !important;
+  background-color: #29312e !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+.turkmen-obscene-word.revealed {
+  color: inherit !important;
+  background: rgba(41, 49, 46, 0.12) !important;
+  user-select: text !important;
+}
