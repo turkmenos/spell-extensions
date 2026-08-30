@@ -23,7 +23,10 @@ const BUILT_IN_WORDS = new Set([
   "saç",
   "kitap",
   "mekdep",
-  "okamak"
+  "okamak",
+  "şu",
+  "kesel",
+  "otag"
 ]);
 
 async function loadDictionary() {

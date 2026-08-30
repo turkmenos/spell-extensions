@@ -5,7 +5,7 @@ const lexicon = new Set([
   "gämi", "howa", "kitap", "mekdep", "okamak", "gelmek", "işlemek", "görmek", "türkmen",
   "bäri", "syçan", "ýurt", "garynja", "saýlamak",
   "bende", "ýardam", "unutmak", "çaga", "minnet", "näsag", "durmak", "ýaş", "saç", "professor",
-  "emdirmek", "ýokanç", "islemek", "ýyly", "şu", "utanmak", "çekinmek"
+  "emdirmek", "ýokanç", "islemek", "ýyly", "şu", "utanmak", "çekinmek", "kesel", "otag"
 ]);
 
 for (const word of [
@@ -15,7 +15,7 @@ for (const word of [
   "bäriñ", "ýurdumyñ", "garynjasynyñ",
   "bendäniñ", "ýardamyny", "unudyp", "çagasyna", "näsaglary",
   "durkak", "ýaşlaryndaky", "saçly", "professorym",
-  "emdirýäň", "şundan", "islämok", "ýylylyk", "utanman-çekinmän"
+  "emdirýäň", "şundan", "islämok", "ýylylyk", "utanman-çekinmän", "keselli", "otagyna"
 ]) {
   assert.equal(morphology.isKnown(lexicon, word), true, `${word} should be recognized`);
 }
