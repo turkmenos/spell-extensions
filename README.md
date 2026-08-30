@@ -30,7 +30,9 @@ remote API or server.
 ## How it works
 
 The background service worker loads `data/dictionary.json` once and creates an
-in-memory set for fast, case-insensitive lookups. The content script examines
+in-memory set for fast, case-insensitive lookups. It also recognizes a small,
+conservative set of common Turkmen suffixes when the remaining stem exists in
+the dictionary. The content script examines
 visible text nodes and estimates whether a text block is Turkmen by considering
 dictionary matches and Turkmen-specific characters. Unknown words in likely
 Turkmen text are then underlined.
@@ -40,9 +42,10 @@ appear while scrolling.
 
 ## Current limitation
 
-Turkmen morphology is not implemented yet. Correct inflected or derived words
-that do not appear as standalone dictionary entries may therefore be marked as
-unknown. Improving morphology support is the next major milestone.
+Full Turkmen morphology is not implemented yet. Some complex inflected or
+derived words that do not appear as standalone dictionary entries may therefore
+still be marked as unknown. Improving morphology support is the next major
+milestone.
 
 ## Project structure
 
