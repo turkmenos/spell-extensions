@@ -6,9 +6,8 @@
   const FRONT_VOWELS = new Set(["ä", "e", "i", "ö", "ü"]);
   const VOWELS = new Set(["a", "ä", "e", "i", "o", "ö", "u", "ü", "y"]);
 
-  // Rules are transcribed from data/json/noun-grammar.json and the tense files.
-  // Longest suffixes come first so layered forms are reduced safely.
   const NOMINAL_SUFFIXES = [
+    "dygy", "digi", "dugy", "dügi",
     "laryň", "leriň", "larymyz", "lerimiz", "laryňyz", "leriňiz",
     "yndaky", "indäki", "undaky", "ündäki", "ndaky", "ndäki",
     "ymyz", "imiz", "umyz", "ümiz", "yňyz", "iňiz", "uňyz", "üňiz",
@@ -20,10 +19,11 @@
     "myz", "miz", "ňyz", "ňiz", "syna", "sine", "suna", "süne",
     "sy", "si", "nyň", "niň", "ny", "ni", "na", "ne",
     "lyk", "lik", "luk", "lük", "ly", "li", "lu", "lü", "ky", "ki",
-    "da", "de", "ň", "a", "e", "y", "i"
+    "da", "de", "ň", "m", "a", "e", "y", "i"
   ];
 
   const PERSON_SUFFIXES = [
+    "ýaňyz", "ýäňiz", "syn", "sin", "sun", "sün",
     "syňyz", "siňiz", "suňuz", "süňüz", "dyrys", "diris", "duryz", "düris",
     "dym", "dim", "dum", "düm", "dyň", "diň", "duň", "düň",
     "dyk", "dik", "duk", "dük", "dyňyz", "diňiz", "duňuz", "düňüz",
@@ -40,12 +40,17 @@
     "maly", "meli", "kak", "käk", "ýäň", "ýaň", "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
     "dy", "di", "du", "dü", "yp", "ip", "up", "üp", "an", "en",
     "amok", "ämok", "emok", "mok", "man", "män",
-    "ar", "er", "maz", "mez", "ma", "me"
+    "ar", "er", "maz", "mez", "ma", "me", "aý", "äý", "sa", "se", "dilen","pdir","äpdir",
+    "ar", "er", "maz", "mez", "ma", "me",
+    "aý", "äý", "sa", "se",
+    "yl", "il", "ul", "ül",
+    "gyn", "gin", "gun", "gün"
   ];
 
+  const QUESTION_SUFFIXES = ["my", "mi"];
+  const PARTICLE_SUFFIXES = ["ä"];
+
   function normalize(word) {
-    // ñ is frequently typed instead of the Turkmen letter ň on keyboards
-    // without a Turkmen layout. Treat it as the same letter for spell checks.
     return word.trim().toLocaleLowerCase("tk").replaceAll("ñ", "ň");
   }
 
@@ -61,6 +66,9 @@
 
   function analyze(lexicon, word) {
     const start = normalize(word);
+    const imperative = start + (isFront(start) ? "mek" : "mak");
+    if (lexicon.has(imperative)) return [imperative];
+
     const queue = [{ form: start, depth: 0 }];
     const visited = new Set([start]);
     const matches = [];
@@ -71,17 +79,17 @@
         for (const candidate of dictionaryCandidates(current.form)) {
           if (lexicon.has(candidate)) matches.push(candidate);
         }
-        if (matches.length) return [...new Set(matches)];
       }
       if (current.depth >= 4) continue;
 
       const suffixes = current.depth === 0
-        ? [...PERSON_SUFFIXES, ...VERB_SUFFIXES, ...NOMINAL_SUFFIXES]
+        ? [...QUESTION_SUFFIXES, ...PARTICLE_SUFFIXES, ...PERSON_SUFFIXES, ...VERB_SUFFIXES, ...NOMINAL_SUFFIXES]
         : [...VERB_SUFFIXES, ...NOMINAL_SUFFIXES];
       for (const suffix of suffixes) {
         if (!current.form.endsWith(suffix)) continue;
         const stem = current.form.slice(0, -suffix.length);
         if ([...stem].length < 2) continue;
+        if (suffix === "m" && [...stem].length < 3) continue;
         for (const variant of stemVariants(stem)) {
           if (!visited.has(variant)) {
             visited.add(variant);
@@ -90,7 +98,9 @@
         }
       }
     }
-    return [];
+    return [...new Set(matches)].sort(
+      (left, right) => [...left].length - [...right].length
+    );
   }
 
   function dictionaryCandidates(stem) {

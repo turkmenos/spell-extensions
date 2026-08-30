@@ -11,7 +11,7 @@ remote API or server.
 ## Features
 
 - Detects likely Turkmen text instead of marking every language on the page
-- Checks words against a bundled dictionary containing over 18,000 headwords
+- Checks words against a bundled dictionary containing 18,674 headwords across 280,481 lines
 - Supports Turkmen characters: `ä`, `ç`, `ž`, `ň`, `ö`, `ş`, `ü`, and `ý`
 - Watches dynamically loaded social media posts
 - Can be enabled or disabled from the extension popup
@@ -28,7 +28,7 @@ remote API or server.
 
 ## How it works
 
-The background service worker loads `data/dictionary.json` once and creates an
+The background service worker loads `data/` once and creates an
 in-memory set for fast, case-insensitive lookups. It also recognizes a small,
 conservative set of common Turkmen suffixes when the remaining stem exists in
 the dictionary. The content script examines
@@ -48,7 +48,7 @@ milestone.
 
 ## Project structure
 
-- `data/dictionary.json` — bundled Turkmen dictionary
+- `data/dictionary-1.json or dictionary-2.json` — bundled Turkmen dictionary
 - `background.js` — dictionary loader and lookup service worker
 - `morphology.js` — noun and verb inflection analyzer derived from the grammar data
 - `data/json/` — source grammar chapters used to derive the morphology rules
