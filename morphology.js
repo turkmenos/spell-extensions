@@ -13,13 +13,14 @@
     "yndaky", "indäki", "undaky", "ündäki", "ndaky", "ndäki",
     "ymyz", "imiz", "umyz", "ümiz", "yňyz", "iňiz", "uňyz", "üňiz",
     "yndan", "inden", "undan", "ünden", "ynyň", "iniň", "unyň", "üniň",
-    "nyň", "niň", "nuň", "nüň", "laryna", "lerine",
+    "nyň", "niň", "nuň", "nüň", "ndan", "nden", "laryna", "lerine",
     "ynda", "inde", "unda", "ünde", "yna", "ine", "una", "üne",
     "lar", "ler", "dan", "den", "dyr", "dir", "dur", "dür",
     "yň", "iň", "uň", "üň", "ym", "im", "um", "üm",
     "myz", "miz", "ňyz", "ňiz", "syna", "sine", "suna", "süne",
     "sy", "si", "nyň", "niň", "ny", "ni", "na", "ne",
-    "ly", "li", "lu", "lü", "ky", "ki", "da", "de", "ň", "a", "e", "y", "i"
+    "lyk", "lik", "luk", "lük", "ly", "li", "lu", "lü", "ky", "ki",
+    "da", "de", "ň", "a", "e", "y", "i"
   ];
 
   const PERSON_SUFFIXES = [
@@ -36,8 +37,9 @@
     "ýandyr", "ýändir", "ýardy", "ýärdi", "jakdy", "jekdi",
     "ypdyr", "ipdir", "updyr", "üpdir", "andyr", "endir",
     "mandyr", "mändir", "mandy", "mändi", "ypdy", "ipdi", "updy", "üpdi",
-    "maly", "meli", "kak", "käk", "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
+    "maly", "meli", "kak", "käk", "ýäň", "ýaň", "ýar", "ýär", "jak", "jek", "ardy", "erdi", "dyr", "dir",
     "dy", "di", "du", "dü", "yp", "ip", "up", "üp", "an", "en",
+    "amok", "ämok", "emok", "mok", "man", "män",
     "ar", "er", "maz", "mez", "ma", "me"
   ];
 
@@ -50,6 +52,10 @@
   function isKnown(lexicon, word) {
     const normalized = normalize(word);
     if (lexicon.has(normalized)) return true;
+    if (normalized.includes("-")) {
+      const parts = normalized.split("-").filter(Boolean);
+      if (parts.length > 1 && parts.every((part) => isKnown(lexicon, part))) return true;
+    }
     return analyze(lexicon, normalized).length > 0;
   }
 

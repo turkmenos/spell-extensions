@@ -4,7 +4,8 @@ const morphology = require("../morphology.js");
 const lexicon = new Set([
   "gämi", "howa", "kitap", "mekdep", "okamak", "gelmek", "işlemek", "görmek", "türkmen",
   "bäri", "syçan", "ýurt", "garynja", "saýlamak",
-  "bende", "ýardam", "unutmak", "çaga", "minnet", "näsag", "durmak", "ýaş", "saç", "professor"
+  "bende", "ýardam", "unutmak", "çaga", "minnet", "näsag", "durmak", "ýaş", "saç", "professor",
+  "emdirmek", "ýokanç", "islemek", "ýyly", "şu", "utanmak", "çekinmek"
 ]);
 
 for (const word of [
@@ -13,7 +14,8 @@ for (const word of [
   "bäriň", "syçany", "ýurdumyň", "garynjasynyň", "saýlamaly",
   "bäriñ", "ýurdumyñ", "garynjasynyñ",
   "bendäniñ", "ýardamyny", "unudyp", "çagasyna", "näsaglary",
-  "durkak", "ýaşlaryndaky", "saçly", "professorym"
+  "durkak", "ýaşlaryndaky", "saçly", "professorym",
+  "emdirýäň", "şundan", "islämok", "ýylylyk", "utanman-çekinmän"
 ]) {
   assert.equal(morphology.isKnown(lexicon, word), true, `${word} should be recognized`);
 }

@@ -13,7 +13,10 @@ const BUILT_IN_WORDS = new Set([
   "unutmak",
   "minnet",
   "näsag",
-  "professor"
+  "professor",
+  "ýokanç",
+  "utanmak",
+  "çekinmek"
 ]);
 
 async function loadDictionary() {
